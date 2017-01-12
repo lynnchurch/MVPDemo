@@ -3,7 +3,7 @@ apply from: "config.gradle"
 buildscript {
     repositories {
         jcenter()
-        mavenCentral() // ButterKnife
+        mavenCentral() // ButterKnife,GPUImage for Android
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'

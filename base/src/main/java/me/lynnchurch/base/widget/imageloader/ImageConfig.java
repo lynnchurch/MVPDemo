@@ -8,7 +8,6 @@ public class ImageConfig {
     protected int mPlaceholder;
     protected int mErrorPic;
 
-
     public String getUrl() {
         return mUrl;
     }

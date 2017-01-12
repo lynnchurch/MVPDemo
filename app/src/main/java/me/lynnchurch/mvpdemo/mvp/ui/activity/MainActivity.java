@@ -22,6 +22,7 @@ import me.lynnchurch.mvpdemo.di.component.AppComponent;
 import me.lynnchurch.mvpdemo.di.component.DaggerUserComponent;
 import me.lynnchurch.mvpdemo.di.module.UserModule;
 import me.lynnchurch.mvpdemo.mvp.contract.UserContract;
+import me.lynnchurch.mvpdemo.mvp.model.bean.User;
 import me.lynnchurch.mvpdemo.mvp.presenter.UserPresenter;
 import rx.functions.Action1;
 import timber.log.Timber;
@@ -109,6 +110,12 @@ public class MainActivity extends ComponentActivity<UserPresenter> implements Us
 
     @Override
     public void setAdapter(DefaultAdapter adapter) {
+        adapter.setOnItemClickListener(new DefaultAdapter.OnRecyclerViewItemClickListener<User>() {
+            @Override
+            public void onItemClick(View view, User data, int position) {
+                showMessage(data.getLogin());
+            }
+        });
         mRecyclerView.setAdapter(adapter);
         initRecycleView();
         initPaginate();
@@ -146,7 +153,7 @@ public class MainActivity extends ComponentActivity<UserPresenter> implements Us
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

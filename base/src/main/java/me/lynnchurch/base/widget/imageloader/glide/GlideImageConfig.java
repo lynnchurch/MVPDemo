@@ -9,10 +9,10 @@ import me.lynnchurch.base.widget.imageloader.ImageConfig;
 
 public class GlideImageConfig extends ImageConfig {
     private DiskCacheStrategy mCacheStrategy;
-    private BitmapTransformation mTransformation; // glide用它来改变图形的形状
+    private BitmapTransformation mTransformation;
 
     private GlideImageConfig(Buidler builder) {
-        mUrl = builder.url;
+        mUrl = builder.mUrl;
         mImageView = builder.mImageView;
         mPlaceholder = builder.mPlaceholder;
         mErrorPic = builder.mErrorPic;
@@ -34,48 +34,56 @@ public class GlideImageConfig extends ImageConfig {
 
 
     public static final class Buidler {
-        private String url;
+        private String mUrl;
         private ImageView mImageView;
         private int mPlaceholder;
         private int mErrorPic;
+        private int mWidth;
+        private int mHeight;
         private DiskCacheStrategy mCacheStrategy;
-        private BitmapTransformation mTransformation; // glide用它来改变图形的形状
+        private BitmapTransformation mTransformation;
 
         private Buidler() {
         }
 
         public Buidler url(String url) {
-            this.url = url;
+            mUrl = url;
             return this;
         }
 
         public Buidler placeholder(int placeholder) {
-            this.mPlaceholder = placeholder;
+            mPlaceholder = placeholder;
             return this;
         }
 
         public Buidler errorPic(int errorPic) {
-            this.mErrorPic = errorPic;
+            mErrorPic = errorPic;
             return this;
         }
 
-        public Buidler imagerView(ImageView imageView) {
-            this.mImageView = imageView;
+        public Buidler resize(int width, int height) {
+            mWidth = width;
+            mHeight = height;
+            return this;
+        }
+
+        public Buidler imageView(ImageView imageView) {
+            mImageView = imageView;
             return this;
         }
 
         public Buidler cacheStrategy(DiskCacheStrategy cacheStrategy) {
-            this.mCacheStrategy = cacheStrategy;
+            mCacheStrategy = cacheStrategy;
             return this;
         }
 
         public Buidler transformation(BitmapTransformation transformation) {
-            this.mTransformation = transformation;
+            mTransformation = transformation;
             return this;
         }
 
         public GlideImageConfig build() {
-            if (url == null) {
+            if (mUrl == null) {
                 throw new IllegalStateException("mUrl is required");
             }
             if (mImageView == null) {

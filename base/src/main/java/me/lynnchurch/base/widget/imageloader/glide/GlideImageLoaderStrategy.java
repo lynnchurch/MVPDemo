@@ -6,6 +6,8 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.ImageViewTarget;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,12 +22,12 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<GlideIm
     }
 
     @Override
-    public void loadImage(Context ctx, GlideImageConfig config) {
+    public void loadImage(Context ctx, final GlideImageConfig config) {
         RequestManager manager = Glide.with(ctx);
 
         DrawableRequestBuilder<String> requestBuilder = manager.load(config.getUrl())
-                .crossFade()
-                .centerCrop();
+                .centerCrop()
+                .crossFade(600);
 
         switch (config.getmCacheStrategy()) {
             case ALL:
@@ -55,6 +57,11 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<GlideIm
         }
 
         requestBuilder
-                .into(config.getImageView());
+                .into(new ImageViewTarget<GlideDrawable>(config.getImageView()) {
+                    @Override
+                    protected void setResource(GlideDrawable resource) {
+                        config.getImageView().setImageDrawable(resource);
+                    }
+                });
     }
 }

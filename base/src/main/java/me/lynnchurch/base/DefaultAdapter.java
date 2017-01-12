@@ -30,7 +30,7 @@ public abstract class DefaultAdapter<T> extends RecyclerView.Adapter<BaseHolder<
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnItemClickListener != null) {
+                if (null != mOnItemClickListener) {
                     mOnItemClickListener.onItemClick(v, mData.get(position), position);
                 }
             }
@@ -59,6 +59,6 @@ public abstract class DefaultAdapter<T> extends RecyclerView.Adapter<BaseHolder<
     }
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.mOnItemClickListener = listener;
+        mOnItemClickListener = listener;
     }
 }

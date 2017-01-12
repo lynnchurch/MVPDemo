@@ -13,6 +13,7 @@ import me.lynnchurch.base.di.scope.ActivityScope;
 import me.lynnchurch.base.mvp.BasePresenter;
 import me.lynnchurch.base.rxerrorhandler.core.RxErrorHandler;
 import me.lynnchurch.base.rxerrorhandler.handler.ErrorHandlerSubscriber;
+import me.lynnchurch.base.rxerrorhandler.handler.RetryWithDelay;
 import me.lynnchurch.base.utils.RxUtils;
 import me.lynnchurch.mvpdemo.mvp.contract.UserContract;
 import me.lynnchurch.mvpdemo.mvp.model.bean.User;
@@ -46,7 +47,7 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
         if (pullToRefresh) lastUserId = 1;
         mModel.getUsers(lastUserId, pullToRefresh)
                 .subscribeOn(Schedulers.io())
-//                .retryWhen(new RetryWithDelay(3, 2)) // 遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔
+                .retryWhen(new RetryWithDelay(3, 2)) // 遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
@@ -86,10 +87,10 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.mAdapter = null;
-        this.mUsers = null;
-        this.mErrorHandler = null;
-        this.mActivityManager = null;
-        this.mApplication = null;
+        mAdapter = null;
+        mUsers = null;
+        mErrorHandler = null;
+        mActivityManager = null;
+        mApplication = null;
     }
 }

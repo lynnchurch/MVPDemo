@@ -43,7 +43,7 @@ public class UserItemHolder extends BaseHolder<User> {
                 .builder()
                 .cacheStrategy(DiskCacheStrategy.ALL)
                 .url(data.getAvatarUrl())
-                .imagerView(mAvater)
+                .imageView(mAvater)
                 .build());
     }
 }
