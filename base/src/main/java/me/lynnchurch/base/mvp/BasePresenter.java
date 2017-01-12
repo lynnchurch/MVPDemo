@@ -1,22 +1,17 @@
 package me.lynnchurch.base.mvp;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
-
-public class BasePresenter<M extends IModel, V extends BaseView> implements Presenter {
-    protected CompositeSubscription mCompositeSubscription;
-
+public abstract class BasePresenter<M extends BaseModel, V extends BaseView> {
     protected M mModel;
-    protected V mRootView;
+    protected V mView;
 
-    public BasePresenter(M model, V rootView) {
+    public BasePresenter(M model, V view) {
         this.mModel = model;
-        this.mRootView = rootView;
+        this.mView = view;
         onStart();
     }
 
     public BasePresenter(V rootView) {
-        this.mRootView = rootView;
+        this.mView = rootView;
         onStart();
     }
 
@@ -25,31 +20,17 @@ public class BasePresenter<M extends IModel, V extends BaseView> implements Pres
     }
 
 
-    @Override
     public void onStart() {
     }
 
-    @Override
     public void onDestroy() {
-        unSubscribe(); // 解除订阅
-        if (mModel != null) {
+        if (null != mModel) {
             mModel.onDestory();
             mModel = null;
         }
-        mRootView = null;
-        mCompositeSubscription = null;
-    }
-
-    protected void addSubscrebe(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
-    }
-
-    protected void unSubscribe() {
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.unsubscribe();
+        if (null != mView) {
+            mView.onDestroy();
+            mView = null;
         }
     }
 }

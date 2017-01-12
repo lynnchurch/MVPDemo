@@ -5,9 +5,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public interface GlobalHttpHandler {
-    Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response);
-
     Request onHttpRequestBefore(Interceptor.Chain chain, Request request);
+
+    Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response);
 
     GlobalHttpHandler EMPTY = new GlobalHttpHandler() {
         @Override
@@ -20,4 +20,5 @@ public interface GlobalHttpHandler {
             return null;
         }
     };
+
 }

@@ -13,10 +13,6 @@ public class ErrorHandlerFactory {
         this.mContext = mContext;
     }
 
-    /**
-     *  处理错误
-     * @param throwable
-     */
     public void handleError(Throwable throwable) {
         mResponseErroListener.handleResponseError(mContext, (Exception) throwable);
     }

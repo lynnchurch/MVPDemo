@@ -25,7 +25,6 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public Gson provideGson() {
-        return new Gson();
-    }
+    public Gson provideGson(){return new Gson();}
+
 }

@@ -13,7 +13,7 @@ import dagger.Provides;
 import io.rx_cache.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
 import me.lynnchurch.base.ActivityManager;
-import me.lynnchurch.base.http.RequestIntercept;
+import me.lynnchurch.base.http.HttpIntercept;
 import me.lynnchurch.base.rxerrorhandler.core.RxErrorHandler;
 import me.lynnchurch.base.rxerrorhandler.handler.listener.ResponseErrorListener;
 import okhttp3.Cache;
@@ -46,22 +46,15 @@ public class ClientModule {
                 .build();
     }
 
-    /**
-     * 提供OkhttpClient
-     *
-     * @param okHttpClient
-     * @return
-     */
     @Singleton
     @Provides
-    OkHttpClient provideClient(OkHttpClient.Builder okHttpClient, Cache cache, Interceptor intercept
-            , List<Interceptor> interceptors) {
+    OkHttpClient provideClient(OkHttpClient.Builder okHttpClient, Cache cache, Interceptor httpInterceptor, List<Interceptor> interceptors) {
         OkHttpClient.Builder builder = okHttpClient
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .cache(cache) // 设置缓存
-                .addNetworkInterceptor(intercept);
-        if (interceptors != null && interceptors.size() > 0) { // 如果外部提供了interceptor的数组则遍历添加
+                .addNetworkInterceptor(httpInterceptor)
+                .cache(cache);
+        if (interceptors != null && !interceptors.isEmpty()) { // 如果外部提供了interceptor的数组则遍历添加
             for (Interceptor interceptor : interceptors) {
                 builder.addInterceptor(interceptor);
             }
@@ -90,16 +83,10 @@ public class ClientModule {
 
     @Singleton
     @Provides
-    Interceptor provideIntercept(RequestIntercept intercept) {
-        return intercept; // 打印请求信息的拦截器
+    Interceptor provideHttpIntercept(HttpIntercept intercept) { // 用于处理请求和响应的拦截器
+        return intercept;
     }
 
-    /**
-     * 提供RXCache客户端
-     *
-     * @param cacheDir 缓存路径
-     * @return
-     */
     @Singleton
     @Provides
     RxCache provideRxCache(File cacheDir) {
@@ -108,11 +95,6 @@ public class ClientModule {
                 .persistence(cacheDir, new GsonSpeaker());
     }
 
-    /**
-     * 提供处理Rxjava错误的管理器
-     *
-     * @return
-     */
     @Singleton
     @Provides
     RxErrorHandler provideRxErrorHandler(Application application, ResponseErrorListener listener) {
@@ -123,11 +105,6 @@ public class ClientModule {
                 .build();
     }
 
-    /**
-     * 提供管理所有activity的管理类
-     *
-     * @return
-     */
     @Singleton
     @Provides
     ActivityManager provideActivityManager() {

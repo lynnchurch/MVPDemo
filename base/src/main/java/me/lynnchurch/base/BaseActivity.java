@@ -14,18 +14,72 @@ import com.zhy.autolayout.AutoRelativeLayout;
 
 import javax.inject.Inject;
 
-import me.lynnchurch.base.mvp.Presenter;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import me.lynnchurch.base.mvp.BasePresenter;
 
-public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActivity {
+public abstract class BaseActivity<P extends BasePresenter> extends RxAppCompatActivity {
     protected BaseApplication mApplication;
     @Inject
     protected P mPresenter;
+    private Unbinder mUnbinder;
 
     private static final String LAYOUT_LINEARLAYOUT = "LinearLayout";
     private static final String LAYOUT_FRAMELAYOUT = "FrameLayout";
     private static final String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
     public static final String IS_IN_ACTIVITY_LIST = "isInActivityList";
 
+
+    protected abstract void setApplication();
+
+    @Nullable
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mApplication = (BaseApplication) getApplication();
+        boolean notIn = false;
+        if (getIntent() != null) {
+            notIn = getIntent().getBooleanExtra(IS_IN_ACTIVITY_LIST, false);
+        }
+
+        if (!notIn) {
+            mApplication.getActivityManager().addActivity(this);
+        }
+
+        setContentView(initView());
+        mUnbinder = ButterKnife.bind(this);
+        setApplication();
+        initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mApplication.getActivityManager().setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mApplication.getActivityManager().getCurrentActivity() == this) {
+            mApplication.getActivityManager().setCurrentActivity(null);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mApplication.getActivityManager().removeActivity(this);
+        if (mPresenter != null) {
+            mPresenter.onDestroy();
+            mPresenter = null;
+        }
+        if (Unbinder.EMPTY != mUnbinder) {
+            mUnbinder.unbind();
+            mUnbinder = null;
+        }
+        mApplication = null;
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -49,47 +103,6 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
         return super.onCreateView(name, context, attrs);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mApplication.getAppManager().setCurrentActivity(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mApplication.getAppManager().getCurrentActivity() == this) {
-            mApplication.getAppManager().setCurrentActivity(null);
-        }
-    }
-
-    @Nullable
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mApplication = (BaseApplication) getApplication();
-        //如果intent包含了此字段,并且为true说明不加入到list
-        // 默认为false,如果不需要管理(比如不需要在退出所有activity(killAll)时退出此activity就在intent加此字段为true)
-        boolean notIn = false;
-        if (getIntent() != null) {
-            notIn = getIntent().getBooleanExtra(IS_IN_ACTIVITY_LIST, false);
-        }
-
-        if (!notIn) {
-            mApplication.getAppManager().addActivity(this);
-        }
-
-        setContentView(initView());
-        ComponentInject();//依赖注入
-        initData();
-    }
-
-    /**
-     * 依赖注入的入口
-     */
-    protected abstract void ComponentInject();
-
     public void fullScreen() {
         if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
             View v = this.getWindow().getDecorView();
@@ -100,17 +113,6 @@ public abstract class BaseActivity<P extends Presenter> extends RxAppCompatActiv
             int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(uiOptions);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mApplication.getAppManager().removeActivity(this);
-        if (mPresenter != null) {
-            mPresenter.onDestroy(); //释放资源
-        }
-        this.mPresenter = null;
-        this.mApplication = null;
     }
 
     @Override

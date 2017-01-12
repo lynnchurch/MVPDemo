@@ -10,9 +10,9 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 
 import javax.inject.Inject;
 
-import me.lynnchurch.base.mvp.Presenter;
+import me.lynnchurch.base.mvp.BasePresenter;
 
-public abstract class BaseFragment<P extends Presenter> extends RxFragment {
+public abstract class BaseFragment<P extends BasePresenter> extends RxFragment {
     protected BaseActivity mActivity;
     protected View mRootView;
     @Inject

@@ -8,7 +8,6 @@ import timber.log.Timber;
 
 public class RetryWithDelay implements
         Func1<Observable<? extends Throwable>, Observable<?>> {
-    public final String TAG = this.getClass().getSimpleName();
     private final int maxRetries;
     private final int retryDelaySecond;
     private int retryCount;
@@ -26,8 +25,8 @@ public class RetryWithDelay implements
                     public Observable<?> call(Throwable throwable) {
                         if (++retryCount <= maxRetries) {
                             // When this Observable calls onNext, the original Observable will be retried (i.e. re-subscribed).
-                            Timber.d("get error, it will try after " + retryDelaySecond
-                                    + " second, retry count " + retryCount);
+                            Timber.e(throwable, "get error:\n%s, it will try after " + retryDelaySecond
+                                    + " second, retry count " + retryCount, throwable.getMessage());
                             return Observable.timer(retryDelaySecond,
                                     TimeUnit.SECONDS);
                         }

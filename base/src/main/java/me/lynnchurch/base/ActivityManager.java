@@ -2,13 +2,9 @@ package me.lynnchurch.base;
 
 import android.app.Application;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.view.View;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -18,7 +14,7 @@ import timber.log.Timber;
 public class ActivityManager {
     private Application mApplication;
 
-    // 管理所有Activity
+    // 所有Activity
     public List<BaseActivity> mActivityList;
     // 当前在前台的Activity
     private BaseActivity mCurrentActivity;
@@ -29,21 +25,6 @@ public class ActivityManager {
     }
 
     /**
-     * 使用snackbar显示内容
-     *
-     * @param message
-     * @param isLong
-     */
-    public void showSnackbar(String message, boolean isLong) {
-        if (getCurrentActivity() == null) {
-            Timber.e("mCurrentActivity == null when showSnackbar(String,boolean)");
-            return;
-        }
-        View view = getCurrentActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-        Snackbar.make(view, message, isLong ? Snackbar.LENGTH_LONG : Snackbar.LENGTH_SHORT).show();
-    }
-
-    /**
      * 让在前台的Activity打开下一个Activity
      *
      * @param intent
@@ -51,7 +32,7 @@ public class ActivityManager {
     public void startActivity(Intent intent) {
         if (getCurrentActivity() == null) {
             Timber.e("mCurrentActivity == null when startActivity(Intent)");
-            //如果没有前台的Activity就使用new_task模式启动Activity
+            // 如果没有前台的Activity就使用new_task模式启动Activity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mApplication.startActivity(intent);
             return;
@@ -97,7 +78,7 @@ public class ActivityManager {
     }
 
     /**
-     * 返回一个存储所有未销毁的Activity的集合
+     * 返回一个Activity集合
      *
      * @return
      */

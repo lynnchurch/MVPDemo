@@ -16,10 +16,10 @@ public final class ImageLoader {
 
 
     public <T extends ImageConfig> void loadImage(Context context, T config) {
-        this.mStrategy.loadImage(context, config);
+        mStrategy.loadImage(context, config);
     }
 
     public void setLoadImgStrategy(BaseImageLoaderStrategy strategy) {
-        this.mStrategy = strategy;
+        mStrategy = strategy;
     }
 }

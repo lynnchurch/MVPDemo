@@ -1,29 +1,16 @@
 package me.lynnchurch.base.mvp;
 
+import android.app.Activity;
+
 public interface BaseView {
 
-    /**
-     * 申请权限
-     */
-    void requestPermissions();
+    void requestPermissions(Activity activity);
 
-    /**
-     * 显示加载
-     */
     void showLoading();
 
-    /**
-     * 隐藏加载
-     */
     void hideLoading();
 
-    /**
-     * 显示信息
-     */
     void showMessage(String message);
 
-    /**
-     * 结束
-     */
-    void finish();
+    void onDestroy();
 }

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -47,4 +49,7 @@ dependencies {
     compile rootProject.ext.dependencies["rxcache"]
     compile rootProject.ext.dependencies["rxcache-jolyglot-gson"]
     compile rootProject.ext.dependencies["utilcode"]
+    compile rootProject.ext.dependencies["rxpermissions"]
+    compile rootProject.ext.dependencies["butter-knife"]
+    compile rootProject.ext.dependencies["butter-knife-processor"]
 }

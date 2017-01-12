@@ -10,24 +10,24 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
@@ -39,4 +39,7 @@ dependencies {
     compile rootProject.ext.dependencies["appcompat-v7"]
     testCompile rootProject.ext.dependencies["junit"]
     compile project(':base')
+    annotationProcessor rootProject.ext.dependencies["dagger2-apt-compiler"]
+    compile rootProject.ext.dependencies["paginate"]
+    compile rootProject.ext.dependencies["logging-interceptor"]
 }

@@ -12,10 +12,6 @@ import javax.inject.Singleton;
 
 import me.lynnchurch.base.widget.imageloader.BaseImageLoaderStrategy;
 
-/**
- * Created by jess on 8/5/16 16:28
- * contact with jess.yan.effort@gmail.com
- */
 @Singleton
 public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<GlideImageConfig> {
 
