@@ -39,9 +39,9 @@ public class MainActivity extends ComponentActivity<UserPresenter> implements Us
     private boolean isLoadingMore;
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.mPaginate = null;
+    public void toFinish() {
+        mPaginate = null;
+        finish();
     }
 
     @Override

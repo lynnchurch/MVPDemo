@@ -12,5 +12,5 @@ public interface BaseView {
 
     void showMessage(String message);
 
-    void onDestroy();
+    void toFinish();
 }

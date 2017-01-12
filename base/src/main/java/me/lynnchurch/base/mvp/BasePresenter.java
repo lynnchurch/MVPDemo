@@ -29,7 +29,7 @@ public abstract class BasePresenter<M extends BaseModel, V extends BaseView> {
             mModel = null;
         }
         if (null != mView) {
-            mView.onDestroy();
+            mView.toFinish();
             mView = null;
         }
     }

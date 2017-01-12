@@ -3,10 +3,6 @@ package me.lynnchurch.mvpdemo.app;
 import android.content.Context;
 import android.text.TextUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import me.lynnchurch.base.BaseApplication;
 import me.lynnchurch.base.di.module.HttpConfigModule;
 import me.lynnchurch.base.http.GlobalHttpHandler;
@@ -69,17 +65,8 @@ public class DemoApplication extends BaseApplication {
 
                     @Override
                     public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
-                        try {
-                            if (!TextUtils.isEmpty(httpResult)) {
-                                JSONArray array = new JSONArray(httpResult);
-                                JSONObject object = (JSONObject) array.get(0);
-                                String login = object.getString("login");
-                                String avatar_url = object.getString("avatar_url");
-                                Timber.i("response --> login: %s | avatar_url%s", login, avatar_url);
-                            }
-                        } catch (JSONException e) {
-                            Timber.e(e, e.getMessage());
-                            return response;
+                        if (!TextUtils.isEmpty(httpResult)) {
+                            Timber.i("response data size: %d KB", httpResult.getBytes().length/1024);
                         }
                         // 这里如果发现token过期,可以先请求最新的token,然后拿最新的token重新请求
                         // 注意在这个回调之前已经调用过proceed,所以这里必须自己去建立网络请求,如使用okhttp去请求
