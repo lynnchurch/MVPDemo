@@ -6,7 +6,7 @@
                  android:supportsRtl="true">
         <meta-data
             android:name="me.lynnchurch.base.widget.imageloader.glide.GlideConfiguration"
-            android:value="GlideModule" />
+            android:value="GlideModule"/>
     </application>
 
 </manifest>
