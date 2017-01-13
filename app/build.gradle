@@ -19,7 +19,7 @@ android {
         }
 
         release {
-            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
