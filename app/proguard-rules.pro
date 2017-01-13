@@ -89,12 +89,9 @@
 -keepattributes *Annotation*
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
--dontwarn com.squareup.okhttp.**
--keep class okhttp3.** {*;}
+-keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
--keep class okio.**{*;}
--keep interface okio.**{*;}
--dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
 
 ###############okhttp-logging############
 -keep class okhttp3.logging.** { *; }
@@ -187,15 +184,15 @@
 
 ################RxCache#################
 -dontwarn io.rx_cache.internal.**
--keep class io.rx_cache.** { *; }
 -keep class io.victoralbertos.jolyglot.** { *; }
+-keep interface io.victoralbertos.jolyglot.** { *; }
+-keep class io.rx_cache.internal.Record { *; }
+-keep class io.rx_cache.Source { *; }
 
 #################RxPermissions##########
 -keep class com.tbruyelle.rxpermissions.** { *; }
 
 ################Timber#################
--keep class timber.log.** { *; }
--keep interface timber.log.** { *; }
 -dontwarn org.jetbrains.annotations.**
 
 ################Canary#################
