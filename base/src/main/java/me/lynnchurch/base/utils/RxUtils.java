@@ -36,9 +36,9 @@ public class RxUtils {
 
     public static <T> LifecycleTransformer<T> bindToLifecycle(BaseView view) {
         if (view instanceof BaseActivity) {
-            return ((BaseActivity) view).<T>bindToLifecycle();
+            return ((BaseActivity) view).bindToLifecycle();
         } else if (view instanceof BaseFragment) {
-            return ((BaseFragment) view).<T>bindToLifecycle();
+            return ((BaseFragment) view).bindToLifecycle();
         } else {
             throw new IllegalArgumentException("view isn't activity or fragment");
         }
