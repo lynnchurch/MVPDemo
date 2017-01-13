@@ -25,7 +25,9 @@
 -optimizations !code/simplification/artithmetic,!field/*,!class/merging/*
 
 ################common###############
--keep class me.lynnchurch.mvpdemo.widget.** { *; }
+-keep class me.lynnchurch.mvpdemo.mvp.bean.** {*;}
+-keep class me.lynnchurch.base.** {*;}
+-keep interface me.lynnchurch.base.** {*;}
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
@@ -70,10 +72,9 @@
 
 ################gson###############
 -keepattributes Signature
--keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.** { *; }
 -keep class com.google.gson.stream.** { *; }
--keep class com.sunloto.shandong.bean.** { *; }
 
 ################glide###############
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -91,9 +92,12 @@
 -keepattributes *Annotation*
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
 -dontwarn com.squareup.okhttp.**
+-keep class okhttp3.** {*;}
+-keep interface okhttp3.** { *; }
+-keep class okio.**{*;}
+-keep interface okio.**{*;}
+-dontwarn okio.**
 
 ###############okhttp-logging############
 -keep class okhttp3.logging.** { *; }
@@ -186,15 +190,15 @@
 
 ################RxCache#################
 -dontwarn io.rx_cache.internal.**
--keep class io.rx_cache.internal.Record { *; }
--keep class io.rx_cache.Source { *; }
+-keep class io.rx_cache.** { *; }
 -keep class io.victoralbertos.jolyglot.** { *; }
--keep interface io.victoralbertos.jolyglot.** { *; }
 
 #################RxPermissions##########
 -keep class com.tbruyelle.rxpermissions.** { *; }
 
 ################Timber#################
+-keep class timber.log.** { *; }
+-keep interface timber.log.** { *; }
 -dontwarn org.jetbrains.annotations.**
 
 ################Canary#################
