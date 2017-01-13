@@ -3,6 +3,8 @@ package me.lynnchurch.mvpdemo.app;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import me.lynnchurch.base.BaseApplication;
 import me.lynnchurch.base.di.module.HttpConfigModule;
 import me.lynnchurch.base.http.GlobalHttpHandler;
@@ -25,6 +27,11 @@ public class DemoApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 日志管理
+        if (BuildConfig.LOG_DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+        // 全局依赖注入器
         mAppComponent = DaggerAppComponent
                 .builder()
                 .appModule(getAppModule())
@@ -34,10 +41,13 @@ public class DemoApplication extends BaseApplication {
                 .serviceModule(new ServiceModule())
                 .cacheModule(new CacheModule())
                 .build();
-
-        if (BuildConfig.LOG_DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+        // 内存溢出检查
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
         }
+        LeakCanary.install(this);
     }
 
     @Override
@@ -66,7 +76,7 @@ public class DemoApplication extends BaseApplication {
                     @Override
                     public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
                         if (!TextUtils.isEmpty(httpResult)) {
-                            Timber.i("response data size: %d KB", httpResult.getBytes().length/1024);
+                            Timber.i("response data size: %d KB", httpResult.getBytes().length / 1024);
                         }
                         // 这里如果发现token过期,可以先请求最新的token,然后拿最新的token重新请求
                         // 注意在这个回调之前已经调用过proceed,所以这里必须自己去建立网络请求,如使用okhttp去请求
